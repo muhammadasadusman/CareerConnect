@@ -1,5 +1,5 @@
 
-const Company = require("../models/company");
+const Company = require("../models/Company");
 
 // ==========================
 // Create Company
