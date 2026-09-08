@@ -1,5 +1,5 @@
 const Application = require("../models/Application");
-const Job = require("../models/job");
+const Job = require("../models/Job");
 
 // =====================================================
 // Apply For Job
