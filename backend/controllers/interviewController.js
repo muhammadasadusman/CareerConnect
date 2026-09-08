@@ -1,6 +1,6 @@
 
-const Interview = require("../models/interview");
-const Application = require("../models/application");
+const Interview = require("../models/Interview");
+const Application = require("../models/Application");
 
 // ==========================================
 // Schedule Interview

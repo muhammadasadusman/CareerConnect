@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 const Job = require("./models/Job");
-const Company = require("./models/company");
+const Company = require("./models/Company");
 const User = require("./models/userModel");
 
 dotenv.config();
