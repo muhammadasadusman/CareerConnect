@@ -1,5 +1,5 @@
 const Job = require("../models/Job");
-const Application = require("../models/application");
+const Application = require("../models/Application");
 
 // ==========================================
 // Get Recruiter Analytics
