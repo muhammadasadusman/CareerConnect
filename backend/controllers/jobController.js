@@ -1,5 +1,5 @@
-const Job = require("../models/job");
-const Company = require("../models/company");
+const Job = require("../models/Job");
+const Company = require("../models/Company");
 
 // =====================================================
 // Job Logo Helper
