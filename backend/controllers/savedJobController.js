@@ -1,5 +1,5 @@
 const SavedJob = require("../models/savedJobModel");
-const Job = require("../models/job");
+const Job = require("../models/Job");
 
 // ==========================
 // Save Job
