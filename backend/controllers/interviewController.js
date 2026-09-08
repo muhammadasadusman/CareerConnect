@@ -1,5 +1,5 @@
 
-const Interview = require("../models/Interview");
+const Interview = require("../models/interview");
 const Application = require("../models/Application");
 
 // ==========================================
