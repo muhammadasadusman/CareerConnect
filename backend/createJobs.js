@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-const Job = require("./models/job");
+const Job = require("./models/Job");
 const Company = require("./models/company");
 const User = require("./models/userModel");
 
