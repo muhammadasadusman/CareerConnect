@@ -150,6 +150,7 @@ const Register = () => {
 
       const response = await API.post("/auth/google", {
         credential: credentialResponse.credential,
+        role: role || "candidate",
       });
 
       // Save JWT

@@ -145,7 +145,7 @@ const login = async (req, res) => {
 // =======================
 const googleLogin = async (req, res) => {
   try {
-    const { credential } = req.body;
+    const { credential, role } = req.body;
 
     // Check credential
     if (!credential) {
@@ -243,8 +243,8 @@ const googleLogin = async (req, res) => {
         // Google users don't need a password
         password: "",
 
-        // New Google users are candidates
-        role: "candidate",
+        // Role from registration or default to candidate
+        role: role === "recruiter" ? "recruiter" : "candidate",
 
         googleId: googleId,
         profileImage: picture || "",

@@ -167,7 +167,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/applications"
+                  to="/candidate-applications"
                   className="text-gray-400 hover:text-purple-400 transition duration-200 text-sm"
                 >
                   My Applications
@@ -176,7 +176,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/profile"
+                  to="/candidate-profile"
                   className="text-gray-400 hover:text-purple-400 transition duration-200 text-sm"
                 >
                   My Profile
@@ -185,7 +185,7 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/signup"
+                  to="/register"
                   className="text-gray-400 hover:text-purple-400 transition duration-200 text-sm"
                 >
                   Create Account

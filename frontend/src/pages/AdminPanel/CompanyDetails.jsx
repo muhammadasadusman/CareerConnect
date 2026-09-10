@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import {
   FaArrowLeft,
@@ -16,10 +16,23 @@ import {
 } from "react-icons/fa";
 
 import API from "../../api/api";
+import Navbar from "../../components/Navbar/Navbar";
+import { getImageUrl, getInitials } from "../../utils/imageUrl";
 
 const CompanyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isAdminView = location.pathname.startsWith("/admin-panel");
+  const storedUser = localStorage.getItem("user");
+  let currentUser = null;
+  try {
+    currentUser = storedUser ? JSON.parse(storedUser) : null;
+  } catch {
+    currentUser = null;
+  }
+  const showAdminControls = isAdminView && currentUser?.role === "admin";
 
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -112,11 +125,11 @@ const CompanyDetails = () => {
         <div className="max-w-5xl mx-auto">
 
           <button
-            onClick={() => navigate("/admin-panel")}
+            onClick={() => navigate(isAdminView ? "/admin-panel" : "/companies")}
             className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition mb-6"
           >
             <FaArrowLeft />
-            Back to Admin Panel
+            {isAdminView ? "Back to Admin Panel" : "Back to Companies"}
           </button>
 
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">

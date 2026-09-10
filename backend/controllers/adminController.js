@@ -21,7 +21,7 @@ const getDashboardStats = async (req, res) => {
     const totalJobs = await Job.countDocuments();
 
     const activeJobs = await Job.countDocuments({
-      status: "Active",
+      status: { $ne: "Closed" },
     });
 
     const totalCompanies = await Company.countDocuments();

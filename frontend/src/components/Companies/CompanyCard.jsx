@@ -1,8 +1,13 @@
-
 import { FaBriefcase, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:5000";
+// =====================================================
+// BACKEND URL
+// =====================================================
+const API_URL = (
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api"
+).replace(/\/api\/?$/, "");
 
 const CompanyCard = ({ company }) => {
   const navigate = useNavigate();
@@ -28,22 +33,46 @@ const CompanyCard = ({ company }) => {
   // COMPANY LOGO URL
   // =====================================================
   const getLogoUrl = (logo) => {
-    if (!logo) return null;
-
-    // Already full URL
-    if (
-      logo.startsWith("http://") ||
-      logo.startsWith("https://")
-    ) {
-      return logo;
+    if (!logo || typeof logo !== "string") {
+      return null;
     }
 
-    // Backend path
-    if (logo.startsWith("/")) {
-      return `${API_URL}${logo}`;
+    const cleanLogo = logo.trim();
+
+    if (!cleanLogo) {
+      return null;
     }
 
-    return `${API_URL}/${logo}`;
+    // ===================================================
+    // Already HTTPS URL
+    // ===================================================
+    if (cleanLogo.startsWith("https://")) {
+      return cleanLogo;
+    }
+
+    // ===================================================
+    // HTTP URL
+    // Convert HTTP → HTTPS for production
+    // ===================================================
+    if (cleanLogo.startsWith("http://")) {
+      return cleanLogo.replace(/^http:\/\//i, "https://");
+    }
+
+    // ===================================================
+    // Relative backend path
+    // Example:
+    // /uploads/logos/google.png
+    // ===================================================
+    if (cleanLogo.startsWith("/")) {
+      return `${API_URL}${cleanLogo}`;
+    }
+
+    // ===================================================
+    // Relative path without /
+    // Example:
+    // uploads/logos/google.png
+    // ===================================================
+    return `${API_URL}/${cleanLogo}`;
   };
 
   const companyLogo = getLogoUrl(company?.logo);
@@ -195,4 +224,3 @@ const CompanyCard = ({ company }) => {
 };
 
 export default CompanyCard;
-

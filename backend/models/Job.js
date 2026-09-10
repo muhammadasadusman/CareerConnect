@@ -67,6 +67,12 @@ const jobSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    status: {
+      type: String,
+      enum: ["Active", "Closed"],
+      default: "Active",
+    },
   },
   {
     timestamps: true,

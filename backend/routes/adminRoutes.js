@@ -11,6 +11,7 @@ const {
   deleteJob,
   deleteCompany,
 } = require("../controllers/adminController");
+const { getAllApplications } = require("../controllers/applicationController");
 
 // All Admin routes require authentication + admin role
 router.use(protect);
@@ -18,6 +19,9 @@ router.use(authorizeRoles("admin"));
 
 // Dashboard statistics
 router.get("/dashboard", getDashboardStats);
+
+// Get all applications
+router.get("/applications", getAllApplications);
 
 // Get all users
 router.get("/users", getAllUsers);

@@ -327,21 +327,22 @@ const CandidateApplications = () => {
                         <div className="flex items-start gap-4">
 
                           
+
 <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden">
 
   {job?.company?.logo ? (
     <img
       src={
         job.company.logo.startsWith("http")
-          ? job.company.logo
-          : `http://localhost:5000${job.company.logo}`
+          ? job.company.logo.replace(/^http:\/\//, "https://")
+          : `https://careerconnect.dockhosting.dev${job.company.logo}`
       }
       alt={job?.company?.name || "Company"}
       className="w-full h-full object-contain p-2"
       onError={(e) => {
         console.error(
           "MY APPLICATIONS LOGO FAILED:",
-          `http://localhost:5000${job.company.logo}`
+          e.currentTarget.src
         );
 
         e.currentTarget.style.display = "none";
@@ -359,7 +360,6 @@ const CandidateApplications = () => {
     />
   ) : null}
 
-  {/* Fallback */}
   <div
     className={`my-application-logo-fallback ${
       job?.company?.logo ? "hidden" : "flex"

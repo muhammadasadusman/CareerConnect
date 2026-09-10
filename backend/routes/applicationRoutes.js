@@ -9,8 +9,10 @@ const uploadResume = require("../middleware/uploadMiddleware");
 
 const {
   applyForJob,
+  checkApplication,
   getMyApplications,
   getJobApplications,
+  getRecruiterAllApplications,
   updateApplicationStatus,
   deleteApplication,
   getAllApplications,
@@ -29,6 +31,16 @@ router.post(
 );
 
 // ==========================
+// Check if applied for job
+// ==========================
+
+router.get(
+  "/check/:jobId",
+  protect,
+  checkApplication
+);
+
+// ==========================
 // Candidate - My Applications
 // ==========================
 
@@ -37,6 +49,17 @@ router.get(
   protect,
   authorizeRoles("candidate"),
   getMyApplications
+);
+
+// ==========================
+// Recruiter - All Applications
+// ==========================
+
+router.get(
+  "/recruiter",
+  protect,
+  authorizeRoles("recruiter"),
+  getRecruiterAllApplications
 );
 
 // ==========================
@@ -50,7 +73,6 @@ router.get(
   getJobApplications
 );
 
-
 router.get(
   "/admin",
   protect,
@@ -59,13 +81,13 @@ router.get(
 );
 
 // ==========================
-// Recruiter - Update Status
+// Update Status (Recruiter or Admin)
 // ==========================
 
 router.put(
   "/:id/status",
   protect,
-  authorizeRoles("recruiter"),
+  authorizeRoles("recruiter", "admin"),
   updateApplicationStatus
 );
 

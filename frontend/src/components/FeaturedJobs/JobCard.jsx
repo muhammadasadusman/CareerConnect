@@ -1,4 +1,3 @@
-
 import {
   FaMapMarkerAlt,
   FaClock,
@@ -12,26 +11,53 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/api";
 
-const API_URL = "http://localhost:5000";
+// =====================================================
+// BACKEND BASE URL
+// =====================================================
+// Production:
+// VITE_API_URL = https://careerconnect.dockhosting.dev/api
+//
+// Local development:
+// VITE_API_URL = http://localhost:5000/api
+// =====================================================
+const API_URL = (
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api"
+).replace(/\/api\/?$/, "");
 
 // =====================================================
 // Convert backend image path into complete URL
 // =====================================================
 const getImageUrl = (imagePath) => {
-  if (!imagePath) return null;
-
-  if (
-    imagePath.startsWith("http://") ||
-    imagePath.startsWith("https://")
-  ) {
-    return imagePath;
+  if (!imagePath || typeof imagePath !== "string") {
+    return null;
   }
 
-  if (imagePath.startsWith("/")) {
-    return `${API_URL}${imagePath}`;
+  const cleanPath = imagePath.trim();
+
+  if (!cleanPath) {
+    return null;
   }
 
-  return `${API_URL}/${imagePath}`;
+  // HTTPS URL
+  if (cleanPath.startsWith("https://")) {
+    return cleanPath;
+  }
+
+  // Old HTTP URL -> HTTPS
+  if (cleanPath.startsWith("http://")) {
+    return cleanPath.replace(/^http:\/\//i, "https://");
+  }
+
+  // Backend path:
+  // /uploads/job-logos/react.png
+  if (cleanPath.startsWith("/")) {
+    return `${API_URL}${cleanPath}`;
+  }
+
+  // Backend path without leading slash:
+  // uploads/job-logos/react.png
+  return `${API_URL}/${cleanPath}`;
 };
 
 // =====================================================
@@ -60,7 +86,9 @@ const JobCard = ({ job }) => {
   // ===================================================
   // JOB IMAGE
   // ===================================================
-  const jobImage = getImageUrl(job?.image || job?.jobLogo);
+  const jobImage = getImageUrl(
+    job?.image || job?.jobLogo
+  );
 
   // ===================================================
   // COMPANY LOGO
@@ -129,7 +157,9 @@ const JobCard = ({ job }) => {
     }
 
     if (user?.role && user.role !== "candidate") {
-      setMessage("Only candidate accounts can apply for jobs.");
+      setMessage(
+        "Only candidate accounts can apply for jobs."
+      );
       setMessageType("error");
       setShowApplyCard(true);
       return;
@@ -185,7 +215,10 @@ const JobCard = ({ job }) => {
         }
       );
 
-      console.log("APPLICATION SUCCESS:", response.data);
+      console.log(
+        "APPLICATION SUCCESS:",
+        response.data
+      );
 
       setMessage(
         response.data?.message ||
@@ -201,7 +234,10 @@ const JobCard = ({ job }) => {
         setMessageType("");
       }, 1800);
     } catch (error) {
-      console.error("APPLICATION ERROR:", error);
+      console.error(
+        "APPLICATION ERROR:",
+        error
+      );
 
       const errorMessage =
         error.response?.data?.message ||
@@ -301,9 +337,13 @@ const JobCard = ({ job }) => {
                   jobImage
                 );
 
-                e.currentTarget.style.display = "none";
+                e.currentTarget.style.display =
+                  "none";
 
-                if (e.currentTarget.nextElementSibling) {
+                if (
+                  e.currentTarget
+                    .nextElementSibling
+                ) {
                   e.currentTarget.nextElementSibling.style.display =
                     "flex";
                 }
@@ -415,10 +455,12 @@ const JobCard = ({ job }) => {
                       companyLogo
                     );
 
-                    e.currentTarget.style.display = "none";
+                    e.currentTarget.style.display =
+                      "none";
 
                     if (
-                      e.currentTarget.nextElementSibling
+                      e.currentTarget
+                        .nextElementSibling
                     ) {
                       e.currentTarget.nextElementSibling.style.display =
                         "flex";
@@ -623,7 +665,9 @@ const JobCard = ({ job }) => {
 
             <button
               type="button"
-              onClick={() => setShowLoginCard(false)}
+              onClick={() =>
+                setShowLoginCard(false)
+              }
               className="
                 absolute
                 top-4
@@ -657,7 +701,9 @@ const JobCard = ({ job }) => {
 
               <button
                 type="button"
-                onClick={() => setShowLoginCard(false)}
+                onClick={() =>
+                  setShowLoginCard(false)
+                }
                 className="
                   flex-1
                   border
@@ -873,4 +919,3 @@ const JobCard = ({ job }) => {
 };
 
 export default JobCard;
-

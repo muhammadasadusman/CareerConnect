@@ -263,11 +263,12 @@ const updateApplicationStatus = async (req, res) => {
       });
     }
 
-    // Check recruiter owns job
+    // Check recruiter owns job (admin can update any application)
     if (
-      !application.job ||
-      !application.job.postedBy ||
-      application.job.postedBy.toString() !== req.user.id
+      req.user.role !== "admin" &&
+      (!application.job ||
+        !application.job.postedBy ||
+        application.job.postedBy.toString() !== req.user.id)
     ) {
       return res.status(403).json({
         message:
@@ -412,6 +413,56 @@ const getAllApplications = async (req, res) => {
 };
 
 // =====================================================
+// Get All Applications For Logged-in Recruiter
+// GET /api/applications/recruiter
+// =====================================================
+const getRecruiterAllApplications = async (req, res) => {
+  try {
+    const recruiterId = req.user.id;
+
+    // Find all jobs posted by recruiter
+    const recruiterJobs = await Job.find({ postedBy: recruiterId }).select("_id");
+    const jobIds = recruiterJobs.map((j) => j._id);
+
+    const applications = await Application.find({
+      job: { $in: jobIds },
+    })
+      .populate({
+        path: "job",
+        select:
+          "title description location jobType category jobLogo salary skills experience deadline createdAt company postedBy",
+        populate: [
+          {
+            path: "company",
+            select: "name logo location website",
+          },
+          {
+            path: "postedBy",
+            select: "name email profileImage role",
+          },
+        ],
+      })
+      .populate(
+        "candidate",
+        "name email phone location resume profileImage"
+      )
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      count: applications.length,
+      applications,
+    });
+  } catch (error) {
+    console.error("Get Recruiter All Applications Error:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch applications",
+      error: error.message,
+    });
+  }
+};
+
+// =====================================================
 // Export
 // =====================================================
 module.exports = {
@@ -419,6 +470,7 @@ module.exports = {
   checkApplication,
   getMyApplications,
   getJobApplications,
+  getRecruiterAllApplications,
   updateApplicationStatus,
   deleteApplication,
   getAllApplications,
