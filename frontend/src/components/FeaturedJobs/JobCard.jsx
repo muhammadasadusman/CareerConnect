@@ -1,3 +1,4 @@
+
 import {
   FaMapMarkerAlt,
   FaClock,
@@ -7,8 +8,10 @@ import {
   FaExclamationTriangle,
   FaArrowRight,
 } from "react-icons/fa";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import API from "../../api/api";
 import { getImageUrl, getInitials } from "../../utils/imageUrl";
 
@@ -36,11 +39,79 @@ const JobCard = ({ job }) => {
       : job?.company?.name || "Company";
 
   // ===================================================
+  // JOB TEXT
+  // ===================================================
+  const jobText = `${job?.title || ""} ${
+    job?.category || ""
+  }`.toLowerCase();
+
+  // ===================================================
   // JOB IMAGE
   // ===================================================
-  const jobImage = getImageUrl(
-    job?.image || job?.jobLogo
+  let jobImage = getImageUrl(
+    job?.image ||
+      job?.jobLogo ||
+      job?.logo ||
+      job?.jobLogoUrl
   );
+
+  // ===================================================
+  // JOB LOGO FALLBACK BY TITLE / CATEGORY
+  // ===================================================
+  if (!jobImage) {
+    if (
+      jobText.includes("product designer") ||
+      jobText.includes("product design")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/product.jpg"
+      );
+    } else if (
+      jobText.includes("react") ||
+      jobText.includes("react.js") ||
+      jobText.includes("react js")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/react.jpg"
+      );
+    } else if (
+      jobText.includes("frontend") ||
+      jobText.includes("front end")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/frontend.jpg"
+      );
+    } else if (
+      jobText.includes("full stack") ||
+      jobText.includes("fullstack")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/fullstack.jpg"
+      );
+    } else if (
+      jobText.includes("javascript") ||
+      jobText.includes("java script")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/javascript.jpg"
+      );
+    } else if (
+      jobText.includes("ui/ux") ||
+      jobText.includes("ui ux") ||
+      jobText.includes("uiux")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/uiux.jpg"
+      );
+    } else if (
+      jobText.includes("backend") ||
+      jobText.includes("back end")
+    ) {
+      jobImage = getImageUrl(
+        "/uploads/job-logos/backend.jpg"
+      );
+    }
+  }
 
   // ===================================================
   // COMPANY LOGO
@@ -62,22 +133,36 @@ const JobCard = ({ job }) => {
     const name = companyName.toLowerCase();
 
     if (name.includes("google")) {
-      companyLogo = getImageUrl("/uploads/logos/google.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/google.png"
+      );
     } else if (name.includes("microsoft")) {
-      companyLogo = getImageUrl("/uploads/logos/microsoft.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/microsoft.png"
+      );
     } else if (name.includes("airhub")) {
-      companyLogo = getImageUrl("/uploads/logos/airhub.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/airhub.png"
+      );
     } else if (name.includes("netflix")) {
-      companyLogo = getImageUrl("/uploads/logos/netflix.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/netflix.png"
+      );
     } else if (name.includes("twilio")) {
-      companyLogo = getImageUrl("/uploads/logos/twilio.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/twilio.png"
+      );
     } else if (
       name.includes("fiverr") ||
       name.includes("fiver")
     ) {
-      companyLogo = getImageUrl("/uploads/logos/fiver.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/fiver.png"
+      );
     } else if (name.includes("careerconnect")) {
-      companyLogo = getImageUrl("/uploads/logos/careerconnect.png");
+      companyLogo = getImageUrl(
+        "/uploads/logos/careerconnect.png"
+      );
     }
   }
 
@@ -228,16 +313,13 @@ const JobCard = ({ job }) => {
           overflow-hidden
           border
           border-gray-100
-
           transition-all
           duration-500
           ease-out
-
           hover:-translate-y-3
           hover:scale-[1.015]
           hover:border-purple-300
           hover:shadow-[0_20px_45px_rgba(124,58,237,0.18)]
-
           animate-[fadeInUp_0.6s_ease-out]
         "
       >
@@ -276,11 +358,9 @@ const JobCard = ({ job }) => {
                 h-full
                 object-cover
                 object-center
-
                 transition-transform
                 duration-700
                 ease-out
-
                 group-hover:scale-110
               "
               onError={(e) => {
@@ -293,8 +373,7 @@ const JobCard = ({ job }) => {
                   "none";
 
                 if (
-                  e.currentTarget
-                    .nextElementSibling
+                  e.currentTarget.nextElementSibling
                 ) {
                   e.currentTarget.nextElementSibling.style.display =
                     "flex";
@@ -323,10 +402,8 @@ const JobCard = ({ job }) => {
               from-purple-950/40
               via-transparent
               to-transparent
-
               opacity-0
               group-hover:opacity-100
-
               transition-opacity
               duration-500
             "
@@ -339,13 +416,10 @@ const JobCard = ({ job }) => {
               inset-y-0
               -left-1/2
               w-1/3
-
               bg-white/20
               skew-x-[-20deg]
-
               transition-all
               duration-700
-
               group-hover:left-[120%]
             "
           />
@@ -355,12 +429,10 @@ const JobCard = ({ job }) => {
             CONTENT
         ================================================= */}
         <div className="p-6">
-
           {/* =================================================
               COMPANY
           ================================================= */}
           <div className="flex items-center gap-4">
-
             {/* COMPANY LOGO */}
             <div
               className="
@@ -375,10 +447,8 @@ const JobCard = ({ job }) => {
                 justify-center
                 overflow-hidden
                 shrink-0
-
                 transition-all
                 duration-500
-
                 group-hover:border-purple-300
                 group-hover:bg-purple-50
                 group-hover:shadow-[0_0_18px_rgba(124,58,237,0.20)]
@@ -395,10 +465,8 @@ const JobCard = ({ job }) => {
                     h-full
                     p-2
                     object-contain
-
                     transition-transform
                     duration-500
-
                     group-hover:scale-110
                   "
                   onError={(e) => {
@@ -428,9 +496,11 @@ const JobCard = ({ job }) => {
                 } w-full h-full items-center justify-center`}
               >
                 <span className="text-lg font-bold text-purple-600">
-                  {companyName
-                    .charAt(0)
-                    .toUpperCase()}
+                  {getInitials
+                    ? getInitials(companyName)
+                    : companyName
+                        .charAt(0)
+                        .toUpperCase()}
                 </span>
               </div>
             </div>
@@ -441,9 +511,7 @@ const JobCard = ({ job }) => {
                 className="
                   font-semibold
                   text-gray-900
-
                   group-hover:text-purple-600
-
                   transition-all
                   duration-300
                 "
@@ -469,10 +537,8 @@ const JobCard = ({ job }) => {
               font-bold
               text-gray-900
               mt-5
-
               transition-all
               duration-300
-
               group-hover:text-purple-600
               group-hover:translate-x-1
             "
@@ -484,7 +550,6 @@ const JobCard = ({ job }) => {
               JOB DETAILS
           ================================================= */}
           <div className="mt-4 space-y-3 text-sm text-gray-600">
-
             {/* LOCATION */}
             <p
               className="
@@ -548,7 +613,6 @@ const JobCard = ({ job }) => {
               FOOTER
           ================================================= */}
           <div className="flex justify-between items-center mt-6">
-
             <span
               className="
                 text-xs
@@ -567,26 +631,20 @@ const JobCard = ({ job }) => {
               onClick={handleApplyClick}
               className="
                 group/button
-
                 flex
                 items-center
                 gap-2
-
                 bg-purple-600
                 hover:bg-yellow-500
                 hover:text-gray-900
-
                 text-white
                 px-4
                 py-2
                 rounded-lg
-
                 text-sm
                 font-medium
-
                 transition-all
                 duration-300
-
                 hover:scale-105
                 hover:shadow-[0_8px_20px_rgba(124,58,237,0.25)]
                 active:scale-95
@@ -612,9 +670,7 @@ const JobCard = ({ job }) => {
       ===================================================== */}
       {showLoginCard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-
           <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-7 animate-[fadeInUp_0.3s_ease-out]">
-
             <button
               type="button"
               onClick={() =>
@@ -645,12 +701,11 @@ const JobCard = ({ job }) => {
             </h2>
 
             <p className="text-gray-500 text-center mt-2 leading-6">
-              Please login to your CareerConnect account
-              before applying for this job.
+              Please login to your CareerConnect
+              account before applying for this job.
             </p>
 
             <div className="flex gap-3 mt-6">
-
               <button
                 type="button"
                 onClick={() =>
@@ -691,7 +746,6 @@ const JobCard = ({ job }) => {
               >
                 Login Now
               </button>
-
             </div>
           </div>
         </div>
@@ -702,9 +756,7 @@ const JobCard = ({ job }) => {
       ===================================================== */}
       {showApplyCard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-
           <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-7 animate-[fadeInUp_0.3s_ease-out]">
-
             {/* CLOSE */}
             <button
               type="button"
@@ -799,18 +851,15 @@ const JobCard = ({ job }) => {
                     text-gray-700
                     outline-none
                     resize-none
-
                     focus:border-purple-500
                     focus:ring-2
                     focus:ring-purple-100
-
                     transition-all
                     duration-300
                   "
                 />
 
                 <div className="flex gap-3 mt-5">
-
                   <button
                     type="button"
                     disabled={loading}
@@ -847,10 +896,8 @@ const JobCard = ({ job }) => {
                       rounded-lg
                       font-medium
                       disabled:opacity-60
-
                       transition-all
                       duration-300
-
                       hover:scale-[1.02]
                       hover:shadow-lg
                     "
@@ -859,7 +906,6 @@ const JobCard = ({ job }) => {
                       ? "Applying..."
                       : "Submit Application"}
                   </button>
-
                 </div>
               </form>
             )}
@@ -871,3 +917,4 @@ const JobCard = ({ job }) => {
 };
 
 export default JobCard;
+
