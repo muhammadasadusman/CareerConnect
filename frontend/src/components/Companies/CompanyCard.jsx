@@ -1,13 +1,6 @@
 import { FaBriefcase, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
-// =====================================================
-// BACKEND URL
-// =====================================================
-const API_URL = (
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000/api"
-).replace(/\/api\/?$/, "");
+import { getImageUrl, getInitials } from "../../utils/imageUrl";
 
 const CompanyCard = ({ company }) => {
   const navigate = useNavigate();
@@ -32,50 +25,7 @@ const CompanyCard = ({ company }) => {
   // =====================================================
   // COMPANY LOGO URL
   // =====================================================
-  const getLogoUrl = (logo) => {
-    if (!logo || typeof logo !== "string") {
-      return null;
-    }
-
-    const cleanLogo = logo.trim();
-
-    if (!cleanLogo) {
-      return null;
-    }
-
-    // ===================================================
-    // Already HTTPS URL
-    // ===================================================
-    if (cleanLogo.startsWith("https://")) {
-      return cleanLogo;
-    }
-
-    // ===================================================
-    // HTTP URL
-    // Convert HTTP → HTTPS for production
-    // ===================================================
-    if (cleanLogo.startsWith("http://")) {
-      return cleanLogo.replace(/^http:\/\//i, "https://");
-    }
-
-    // ===================================================
-    // Relative backend path
-    // Example:
-    // /uploads/logos/google.png
-    // ===================================================
-    if (cleanLogo.startsWith("/")) {
-      return `${API_URL}${cleanLogo}`;
-    }
-
-    // ===================================================
-    // Relative path without /
-    // Example:
-    // uploads/logos/google.png
-    // ===================================================
-    return `${API_URL}/${cleanLogo}`;
-  };
-
-  const companyLogo = getLogoUrl(company?.logo);
+  const companyLogo = getImageUrl(company?.logo);
 
   // =====================================================
   // UI
@@ -114,6 +64,7 @@ const CompanyCard = ({ company }) => {
           items-center
           justify-center
           overflow-hidden
+          shrink-0
           transition
           duration-300
           group-hover:border-purple-300

@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 
 import API from "../api/api";
+import { getImageUrl, getInitials } from "../utils/imageUrl";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -318,49 +319,35 @@ await API.post("/applications/apply", formData);
             <div className="flex gap-5">
 
               {/* Company Logo */}
-             <div className="w-20 h-20 rounded-xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
+              <div className="w-20 h-20 rounded-xl bg-white border border-gray-200 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                {getImageUrl(job?.company?.logo) ? (
+                  <img
+                    src={getImageUrl(job.company.logo)}
+                    alt={job?.company?.name || "Company"}
+                    className="w-full h-full object-contain p-2"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      const fallback =
+                        e.currentTarget.parentElement.querySelector(
+                          ".company-logo-fallback"
+                        );
+                      if (fallback) {
+                        fallback.classList.remove("hidden");
+                        fallback.classList.add("flex");
+                      }
+                    }}
+                  />
+                ) : null}
 
-  {job?.company?.logo ? (
-    <img
-      src={
-        job.company.logo.startsWith("http")
-          ? job.company.logo
-          : `http://localhost:5000${job.company.logo}`
-      }
-      alt={job?.company?.name || "Company"}
-      className="w-full h-full object-contain p-2"
-      onError={(e) => {
-        console.error(
-          "JOB DETAILS LOGO FAILED:",
-          `http://localhost:5000${job.company.logo}`
-        );
-
-        e.currentTarget.style.display = "none";
-
-        const fallback =
-          e.currentTarget.parentElement.querySelector(
-            ".company-logo-fallback"
-          );
-
-        if (fallback) {
-          fallback.classList.remove("hidden");
-          fallback.classList.add("flex");
-        }
-      }}
-    />
-  ) : null}
-
-  {/* Fallback */}
-  <div
-    className={`company-logo-fallback ${
-      job?.company?.logo ? "hidden" : "flex"
-    } w-full h-full items-center justify-center bg-purple-100 text-purple-600 text-3xl font-bold`}
-  >
-    {job?.company?.name
-      ?.charAt(0)
-      ?.toUpperCase() || "C"}
-  </div>
-      </div>
+                {/* Fallback */}
+                <div
+                  className={`company-logo-fallback ${
+                    getImageUrl(job?.company?.logo) ? "hidden" : "flex"
+                  } w-full h-full items-center justify-center bg-purple-100 text-purple-600 text-3xl font-bold`}
+                >
+                  {getInitials(job?.company?.name || "Company")}
+                </div>
+              </div>
 
               <div>
 

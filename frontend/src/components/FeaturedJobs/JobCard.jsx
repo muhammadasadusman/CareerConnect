@@ -10,55 +10,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/api";
-
-// =====================================================
-// BACKEND BASE URL
-// =====================================================
-// Production:
-// VITE_API_URL = https://careerconnect.dockhosting.dev/api
-//
-// Local development:
-// VITE_API_URL = http://localhost:5000/api
-// =====================================================
-const API_URL = (
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000/api"
-).replace(/\/api\/?$/, "");
-
-// =====================================================
-// Convert backend image path into complete URL
-// =====================================================
-const getImageUrl = (imagePath) => {
-  if (!imagePath || typeof imagePath !== "string") {
-    return null;
-  }
-
-  const cleanPath = imagePath.trim();
-
-  if (!cleanPath) {
-    return null;
-  }
-
-  // HTTPS URL
-  if (cleanPath.startsWith("https://")) {
-    return cleanPath;
-  }
-
-  // Old HTTP URL -> HTTPS
-  if (cleanPath.startsWith("http://")) {
-    return cleanPath.replace(/^http:\/\//i, "https://");
-  }
-
-  // Backend path:
-  // /uploads/job-logos/react.png
-  if (cleanPath.startsWith("/")) {
-    return `${API_URL}${cleanPath}`;
-  }
-
-  // Backend path without leading slash:
-  // uploads/job-logos/react.png
-  return `${API_URL}/${cleanPath}`;
-};
+import { getImageUrl, getInitials } from "../../utils/imageUrl";
 
 // =====================================================
 // JOB CARD
@@ -110,22 +62,22 @@ const JobCard = ({ job }) => {
     const name = companyName.toLowerCase();
 
     if (name.includes("google")) {
-      companyLogo = `${API_URL}/uploads/logos/google.png`;
+      companyLogo = getImageUrl("/uploads/logos/google.png");
     } else if (name.includes("microsoft")) {
-      companyLogo = `${API_URL}/uploads/logos/microsoft.png`;
+      companyLogo = getImageUrl("/uploads/logos/microsoft.png");
     } else if (name.includes("airhub")) {
-      companyLogo = `${API_URL}/uploads/logos/airhub.png`;
+      companyLogo = getImageUrl("/uploads/logos/airhub.png");
     } else if (name.includes("netflix")) {
-      companyLogo = `${API_URL}/uploads/logos/netflix.png`;
+      companyLogo = getImageUrl("/uploads/logos/netflix.png");
     } else if (name.includes("twilio")) {
-      companyLogo = `${API_URL}/uploads/logos/twilio.png`;
+      companyLogo = getImageUrl("/uploads/logos/twilio.png");
     } else if (
       name.includes("fiverr") ||
       name.includes("fiver")
     ) {
-      companyLogo = `${API_URL}/uploads/logos/fiver.png`;
+      companyLogo = getImageUrl("/uploads/logos/fiver.png");
     } else if (name.includes("careerconnect")) {
-      companyLogo = `${API_URL}/uploads/logos/careerconnect.png`;
+      companyLogo = getImageUrl("/uploads/logos/careerconnect.png");
     }
   }
 

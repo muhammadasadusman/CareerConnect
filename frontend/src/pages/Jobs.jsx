@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 
 import API from "../api/api";
+import { getImageUrl, getInitials } from "../utils/imageUrl";
 
 const Jobs = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -514,18 +515,7 @@ const Jobs = () => {
         ? job?.company?.logo
         : job?.companyLogo;
 
-    if (!logo) {
-      return null;
-    }
-
-    if (
-      logo.startsWith("http://") ||
-      logo.startsWith("https://")
-    ) {
-      return logo;
-    }
-
-    return `http://localhost:5000${logo}`;
+    return getImageUrl(logo);
   };
 
   // =====================================================
@@ -946,7 +936,7 @@ const Jobs = () => {
                   </button>
 
                   {/* Company Logo */}
-                  <div className="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center overflow-hidden mb-5">
+                  <div className="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center overflow-hidden shrink-0 mb-5">
                     {companyLogo ? (
                       <img
                         src={companyLogo}
